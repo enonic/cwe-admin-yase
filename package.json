@@ -177,6 +177,9 @@
     "webpack-cli": "^5"
   },
   "license": "Apache-2.0",
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
+  },
   "private": true,
   "repository": {
     "type": "git",
