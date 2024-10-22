@@ -80,23 +80,14 @@ tasks.withType(Copy) {
   includeEmptyDirs = false
 }
 
-
-//──────────────────────────────────────────────────────────────────────────────
-// Gradle wrapper
-//──────────────────────────────────────────────────────────────────────────────
 wrapper {
 	distributionUrl = "${gradleDistributionUrl}"
 }
 
-
-//──────────────────────────────────────────────────────────────────────────────
-// Gradle node plugin
-//──────────────────────────────────────────────────────────────────────────────
 node {
 	download = true
 	version = "${nodeVersion}"
 }
-
 
 //──────────────────────────────────────────────────────────────────────────────
 // Webpack
@@ -109,22 +100,20 @@ sourceSets {
 	}
 }
 
-task yarnCheck(
-	dependsOn: yarn_install,
-	type: YarnTask
-) {
+npmInstall.args = ['--legacy-peer-deps']
+
+tasks.register('npmCheck', NpmTask) {
+	dependsOn npmInstall
 	args = ['verify:types']
 	environment = [
 		'FORCE_COLOR': 'true',
 	]
 }
 // Too many errors, so we skip this for now
-// check.dependsOn yarnCheck
+// check.dependsOn npmCheck
 
-task yarnTest(
-	dependsOn: yarn_install,
-	type: YarnTask
-) {
+tasks.register('npmTest', NpmTask) {
+	dependsOn npmInstall
 	args = ['test']
 	environment = [
 		'FORCE_COLOR': 'true',
@@ -135,7 +124,7 @@ task yarnTest(
 }
 // The lib-explorer files are not available on github, so tests can't run there yet.
 // Also @enonic-types/lib-explorer is not available on npm yet, which also prevents tests from running on github.
-// test.dependsOn yarnTest
+// test.dependsOn npmTest
 
 task cleanCoverage(type:Delete) {
 	delete 'coverage'
@@ -143,7 +132,7 @@ task cleanCoverage(type:Delete) {
 clean.dependsOn cleanCoverage
 
 task webpack(type:NodeTask) {
-	dependsOn yarn_install
+	dependsOn npmInstall
 	environment = [
 		'FORCE_COLOR': 'true',
 		'LOG_LEVEL_FROM_GRADLE': gradle.startParameter.logLevel.toString(),
@@ -159,28 +148,32 @@ task webpack(type:NodeTask) {
 jar.dependsOn webpack
 javadoc.dependsOn webpack
 
-// task swc(type:YarnTask) {
+// task swc(type:NpmTask) {
 // 	dependsOn webpack
 // 	mustRunAfter webpack
-// 	args = ['swc']
+// 	args = [
+// 		'run',
+// 		'swc'
+// 	]
 // 	outputs.dir './build/resources/main' // processResources will delete the directory if this is not present
 // }
 
-task tsup(
-	dependsOn: yarn_install,
-	type: YarnTask
-) {
-	args = ['build']
+tasks.register('npmBuild', NpmTask) {
+	args = [
+		'run',
+		'build'
+	]
+	dependsOn npmInstall
 	environment = [
 		'FORCE_COLOR': 'true',
 		'LOG_LEVEL_FROM_GRADLE': gradle.startParameter.logLevel.toString(),
 		'NODE_ENV': project.hasProperty('dev') || project.hasProperty('development') ? 'development' : 'production'
 	]
 	inputs.dir 'src/main/resources'
-	outputs.dir './build/resources/main' // processResources will delete the directory if this is not present
+	outputs.dir 'build/resources/main' // processResources will delete the directory if this is not present
 }
-jar.dependsOn tsup
-javadoc.dependsOn tsup
+jar.dependsOn npmBuild
+javadoc.dependsOn npmBuild
 
 
 task watch(type:NodeTask) {

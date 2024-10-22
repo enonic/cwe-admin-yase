@@ -1,3 +1,7 @@
+# Anywhere
+.DS_Store
+
+# On root
 /bin/
 /.build/
 /.enonic
@@ -7,5 +11,3 @@
 /coverage/
 /node_modules/
 /symlinks/
-/yarn-error.log
-.DS_Store

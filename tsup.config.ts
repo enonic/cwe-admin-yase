@@ -172,7 +172,7 @@ export default defineConfig((options: MyOptions) => {
 			minify: false, // Minifying server files makes debugging harder
 			noExternal: [
 				// To check if you have forgotten any try this command
-				// clear && yarn clean && yarn build:tsup && grep -r 'require(' build/resources/main|grep -v '("\.'|grep -v '("\/'
+				// clear && npm run clean && npm run build:tsup && grep -r 'require(' build/resources/main|grep -v '("\.'|grep -v '("\/'
 
 				// TODO: These might need Polyfills for global to run in Nashorn:
 				// '@enonic/explorer-utils', //
