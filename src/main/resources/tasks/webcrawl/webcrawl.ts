@@ -472,9 +472,10 @@ export function run({
 				TRACE && log.debug('ogLocale:%s', ogLocale);
 
 				const bodyElWithNothingRemoved = querySelector(rootNode, 'body');
-				log.debug('bodyElWithNothingRemoved:%s', getText(bodyElWithNothingRemoved));
+				//log.debug('bodyElWithNothingRemoved:%s', getText(bodyElWithNothingRemoved));
 
 				const cleanedBodyEl = bodyElWithNothingRemoved.clone();
+				//log.debug('cleanedBodyEl:%s', getText(cleanedBodyEl));
 
 				// Remove all elements except tags and text
 				cleanedBodyEl.find('*').contents().filter(
@@ -511,6 +512,8 @@ export function run({
 				if (boolFollow) {
 					const linkEls = querySelectorAll(bodyElWithNothingRemoved, "a[href]:not([href^='#']):not([href^='mailto:']):not([href^='tel:']):not([href^='content:'])");
 					log.debug('linkEls.length:%s', linkEls.length);
+					const linksInCleanedBody = querySelectorAll(cleanedBodyEl, "a[href]:not([href^='#']):not([href^='mailto:']):not([href^='tel:']):not([href^='content:'])");
+					log.debug('linksInCleanedBody.length:%s', linksInCleanedBody.length);
 					linksForLoop:
 					for (let i = 0; i < linkEls.length; i += 1) {
 						const el = linkEls[i];
