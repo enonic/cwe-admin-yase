@@ -416,6 +416,7 @@ export function run({
 				// log.debug(safeStringify({html: rootNode.html()}));
 
 				const headEl = querySelector(rootNode, 'head');
+				log.debug('headEl:%s', getText(headEl));
 				// log.debug(safeStringify({head: head.html()}));
 
 				// Robots <META> tag http://www.searchtools.com/robots/robots-meta.html
@@ -446,10 +447,10 @@ export function run({
 				const htmlWithLangEl = querySelector(rootNode,'html[lang]');
 
 				const lang = htmlWithLangEl ? getAttributeValue(htmlWithLangEl, 'lang') : '';
-				TRACE && log.debug('lang:%s', lang);
+				log.debug('lang:%s', lang);
 
 				const titleEl = querySelector(headEl, 'title');
-				TRACE && log.debug('titleEl:%s', outerHTML(titleEl));
+				log.debug('titleEl:%s', outerHTML(titleEl));
 
 				const title = titleEl ? getText(titleEl) : '';
 				log.debug('title:%s', title);
@@ -471,6 +472,8 @@ export function run({
 				TRACE && log.debug('ogLocale:%s', ogLocale);
 
 				const bodyElWithNothingRemoved = querySelector(rootNode, 'body');
+				log.debug('bodyElWithNothingRemoved:%s', getText(bodyElWithNothingRemoved));
+
 				const cleanedBodyEl = bodyElWithNothingRemoved.clone();
 
 				// Remove all elements except tags and text
