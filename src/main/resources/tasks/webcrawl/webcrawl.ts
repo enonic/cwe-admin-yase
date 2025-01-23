@@ -416,7 +416,7 @@ export function run({
 				// log.debug(safeStringify({html: rootNode.html()}));
 
 				const headEl = querySelector(rootNode, 'head');
-				log.debug('headEl:%s', getText(headEl));
+				// log.debug('headEl:%s', getText(headEl));
 				// log.debug(safeStringify({head: head.html()}));
 
 				// Robots <META> tag http://www.searchtools.com/robots/robots-meta.html
@@ -475,7 +475,6 @@ export function run({
 				//log.debug('bodyElWithNothingRemoved:%s', getText(bodyElWithNothingRemoved));
 
 				const cleanedBodyEl = bodyElWithNothingRemoved.clone();
-				//log.debug('cleanedBodyEl:%s', getText(cleanedBodyEl));
 
 				// Remove all elements except tags and text
 				cleanedBodyEl.find('*').contents().filter(
@@ -507,6 +506,8 @@ export function run({
 
 				// log.debug(`cleanedBodyEl:${toStr(cleanedBodyEl)}`); // JSON.stringify got a cyclic data structure
 				// log.debug(safeStringify({body: body.html()}));
+
+				log.debug('cleanedBodyEl:%s', getText(cleanedBodyEl));
 
 				const links: string[] = [];
 				if (boolFollow) {
